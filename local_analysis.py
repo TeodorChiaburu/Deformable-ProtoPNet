@@ -41,7 +41,7 @@ test_image_dir = args.imgdir[0] #'./local_analysis/Painted_Bunting_Class15_0081/
 test_image_name = args.img[0] #'Painted_Bunting_0081_15230.jpg'
 test_image_label = args.imgclass[0] #15
 
-test_image_path = os.path.join(test_image_name)
+test_image_path = os.path.join(test_image_dir, test_image_name)
 
 # load the model
 check_test_accu = False

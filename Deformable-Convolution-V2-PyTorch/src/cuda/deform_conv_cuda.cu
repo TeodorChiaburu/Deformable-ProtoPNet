@@ -6,6 +6,8 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
+#include <iostream>
+
 // #include <THC/THC.h>
 // #include <THC/THCAtomics.cuh>
 // #include <THC/THCDeviceUtils.cuh>

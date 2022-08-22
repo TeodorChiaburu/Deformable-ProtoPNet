@@ -1,23 +1,19 @@
-base_architecture = 'resnet50'
+base_architecture = 'resnet50' # will load inat weights if told so in resnet_features.py:L258
 img_size = 224
+num_classes = 22
 
 experiment_run = '001'
 
 # Full set: './datasets/CUB_200_2011/'
 # Cropped set: './datasets/cub200_cropped/'
 # Stanford dogs: './datasets/stanford_dogs/'
-data_path = './datasets/CUB_200_2011/'
-#120 classes in stanford_dogs, 200 in CUB_200_2011
-if 'stanford_dogs' in data_path:
-    num_classes = 120
-else:
-    num_classes = 200
+data_path = '../../data/data_lstudio/'
 
-train_dir = data_path + 'train/'
+train_dir = data_path + 'Bees_bbox_train/'
 # Cropped set: train_cropped & test_cropped
 # Full set: train & test
-test_dir = data_path + 'test/'
-train_push_dir = data_path + 'train/'
+test_dir = data_path + 'Bees_bbox_val/'
+train_push_dir = data_path + 'Bees_bbox_train/'
 train_batch_size = 80
 test_batch_size = 100
 train_push_batch_size = 75

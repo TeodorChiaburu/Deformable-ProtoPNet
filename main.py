@@ -61,7 +61,7 @@ print("Random seed: ", rand_seed)
     
 print(os.environ['CUDA_VISIBLE_DEVICES'])
 
-from settings import img_size, experiment_run, base_architecture
+from settings import img_size, experiment_run, base_architecture, num_classes
 
 if num_prototypes is None:
     num_prototypes = 1200
@@ -112,10 +112,7 @@ from settings import train_batch_size, test_batch_size, train_push_batch_size
 normalize = transforms.Normalize(mean=mean,
                                  std=std)
 
-if 'stanford_dogs' in train_dir:
-    num_classes = 120
-else:
-    num_classes = 200
+# Imported from settings.py
 log("{} classes".format(num_classes))
 
 if 'augmented' not in train_dir:

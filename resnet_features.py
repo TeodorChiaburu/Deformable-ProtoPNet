@@ -13,7 +13,7 @@ model_urls = {
 }
 #'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
 
-model_dir = './pretrained_models'
+model_dir = '../ProtoPNet/pretrained_models'
 
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
@@ -255,7 +255,7 @@ def resnet34_features(pretrained=False, **kwargs):
     return model
 
 
-def resnet50_features(pretrained=False, inat=True, **kwargs):
+def resnet50_features(pretrained=True, inat=True, **kwargs):
     """Constructs a ResNet-50 model.
     Args:
         pretrained (bool): If True, returns a pre-trained model
@@ -264,7 +264,7 @@ def resnet50_features(pretrained=False, inat=True, **kwargs):
     model = ResNet_features(Bottleneck, [3, 4, 6, 4], **kwargs)
     if pretrained:
         if inat:
-            my_dict = torch.load(model_dir + '/' + 'BBN.iNaturalist2017.res50.90epoch.best_model.pth')
+            my_dict = torch.load(model_dir + '/' + 'BBN.iNaturalist2017.res50.180epoch.best_model.pth')
         else:
             my_dict = torch.load(model_dir + '/' + 'resnet50-0676ba61.pth')
         
