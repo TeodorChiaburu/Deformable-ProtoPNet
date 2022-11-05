@@ -2,12 +2,12 @@ base_architecture = 'resnet50' # will load inat weights if told so in resnet_fea
 img_size = 224
 num_classes = 22
 
-experiment_run = '001'
+experiment_run = '006'
 
 # Full set: './datasets/CUB_200_2011/'
 # Cropped set: './datasets/cub200_cropped/'
 # Stanford dogs: './datasets/stanford_dogs/'
-data_path = '../../data/data_lstudio/'
+data_path = '../../data/Wildbienen/'
 
 train_dir = data_path + 'Bees_bbox_train/'
 # Cropped set: train_cropped & test_cropped
@@ -21,7 +21,7 @@ train_push_batch_size = 75
 joint_optimizer_lrs = {'features': 1e-4,
                        'add_on_layers': 3e-3,
                        'prototype_vectors': 3e-3,
-                       'conv_offset': 1e-4,
+                       'conv_offset': 5e-4,
                        'joint_last_layer_lr': 1e-5}
 joint_lr_step_size = 5
 
@@ -41,8 +41,8 @@ last_layer_fixed = True
 
 coefs = {
     'crs_ent': 1,
-    'clst': -0.8,
-    'sep': 0.08,
+    'clst': 1, #0.1, #-0.8,
+    'sep': 1, #0.01, #0.08,
     'l1': 1e-2,
     'offset_bias_l2': 8e-1,
     'offset_weight_l2': 8e-1,
@@ -51,9 +51,9 @@ coefs = {
 
 subtractive_margin = True
 
-num_train_epochs = 31
-num_warm_epochs = 5
-num_secondary_warm_epochs = 5
-push_start = 20
+num_train_epochs = 21
+num_warm_epochs = 3
+num_secondary_warm_epochs = 3
+push_start = 10
 
 push_epochs = [i for i in range(num_train_epochs) if i % 10 == 0]
