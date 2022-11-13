@@ -227,7 +227,7 @@ class ResNet_features(nn.Module):
         template = 'resnet{}_features'
         return template.format(self.num_layers() + 1)
 
-def resnet18_features(pretrained=False, **kwargs):
+def resnet18_features(pretrained=True, **kwargs):
     """Constructs a ResNet-18 model.
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
@@ -267,7 +267,7 @@ def resnet50_features(pretrained=True, inat=True, **kwargs):
             my_dict = torch.load(model_dir + '/' + 'BBN.iNaturalist2017.res50.180epoch.best_model.pth')
         else:
             my_dict = torch.load(model_dir + '/' + 'resnet50-0676ba61.pth')
-        
+
         my_dict.pop('module.classifier.weight')
         my_dict.pop('module.classifier.bias')
         for key in list(my_dict.keys()):

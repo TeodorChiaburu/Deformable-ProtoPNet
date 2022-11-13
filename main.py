@@ -74,7 +74,7 @@ elif 'resnet152' in base_architecture:
     add_on_layers_type = 'upsample'
 elif 'resnet50' in base_architecture:
     prototype_shape = (num_prototypes, 2048, 2, 2)
-    add_on_layers_type = 'upsample'
+    add_on_layers_type = 'identity' #'upsample'
 elif 'densenet121' in base_architecture:
     prototype_shape = (num_prototypes, 1024, 2, 2)
     add_on_layers_type = 'upsample'
@@ -165,16 +165,18 @@ log('test set size: {0}'.format(len(test_loader.dataset)))
 log('batch size: {0}'.format(train_batch_size))
 
 # construct the model
-ppnet = model.construct_PPNet(base_architecture=base_architecture,
-                            pretrained=True, img_size=img_size,
-                            prototype_shape=prototype_shape,
-                            num_classes=num_classes, topk_k=topk_k, m=m,
-                            add_on_layers_type=add_on_layers_type,
-                            using_deform=using_deform,
-                            incorrect_class_connection=incorrect_class_connection,
-                            deformable_conv_hidden_channels=deformable_conv_hidden_channels,
-                            prototype_dilation=2)
-    
+# ppnet = model.construct_PPNet(base_architecture=base_architecture,
+#                             pretrained=True, img_size=img_size,
+#                             prototype_shape=prototype_shape,
+#                             num_classes=num_classes, topk_k=topk_k, m=m,
+#                             add_on_layers_type=add_on_layers_type,
+#                             using_deform=using_deform,
+#                             incorrect_class_connection=incorrect_class_connection,
+#                             deformable_conv_hidden_channels=deformable_conv_hidden_channels,
+#                             prototype_dilation=2)
+
+ppnet = torch.load('../ProtoPNet/pretrained_models/resnet50_30push0.8635_Jon.pth')
+
 ppnet = ppnet.cuda()
 ppnet_multi = torch.nn.DataParallel(ppnet)
 class_specific = True
@@ -260,7 +262,7 @@ for epoch in range(num_train_epochs):
     accu = tnt.test(model=ppnet_multi, dataloader=test_loader,
                     class_specific=class_specific, log=log, subtractive_margin=subtractive_margin)
     save.save_model_w_condition(model=ppnet, model_dir=model_dir, model_name=str(epoch) + 'nopush', accu=accu,
-                                target_accu=0.70, log=log)
+                                target_accu=0.80, log=log)
 
     if (epoch == push_start and push_start < 20) or (epoch >= push_start and epoch in push_epochs):
         push.push_prototypes(
@@ -279,7 +281,7 @@ for epoch in range(num_train_epochs):
         accu = tnt.test(model=ppnet_multi, dataloader=test_loader,
                         class_specific=class_specific, log=log)
         save.save_model_w_condition(model=ppnet, model_dir=model_dir, model_name=str(epoch) + 'push', accu=accu,
-                                    target_accu=0.70, log=log)
+                                    target_accu=0.80, log=log)
 
         if not last_layer_fixed:
             tnt.last_only(model=ppnet_multi, log=log, last_layer_fixed=last_layer_fixed)
@@ -291,6 +293,6 @@ for epoch in range(num_train_epochs):
                 accu = tnt.test(model=ppnet_multi, dataloader=test_loader,
                                 class_specific=class_specific, log=log)
                 save.save_model_w_condition(model=ppnet, model_dir=model_dir, model_name=str(epoch) + '_' + str(i) + 'push', accu=accu,
-                                            target_accu=0.70, log=log)
+                                            target_accu=0.80, log=log)
 logclose()
 
