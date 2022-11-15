@@ -182,12 +182,12 @@ ppnet_multi = torch.nn.DataParallel(ppnet)
 class_specific = True
 
 # define optimizer
-from settings import joint_optimizer_lrs, joint_lr_step_size
+from settings import joint_optimizer_lrs, joint_lr_step_size, weight_decay
 if 'resnet152' in base_architecture and 'stanford_dogs' in train_dir:
     joint_optimizer_lrs['features'] = 1e-5
 joint_optimizer_specs = \
-[{'params': ppnet.features.parameters(), 'lr': joint_optimizer_lrs['features'], 'weight_decay': 1e-3}, # bias are now also being regularized
- {'params': ppnet.add_on_layers.parameters(), 'lr': joint_optimizer_lrs['add_on_layers'], 'weight_decay': 1e-3},
+[{'params': ppnet.features.parameters(), 'lr': joint_optimizer_lrs['features'], 'weight_decay': weight_decay}, # bias are now also being regularized
+ {'params': ppnet.add_on_layers.parameters(), 'lr': joint_optimizer_lrs['add_on_layers'], 'weight_decay': weight_decay},
  {'params': ppnet.prototype_vectors, 'lr': joint_optimizer_lrs['prototype_vectors']},
  {'params': ppnet.conv_offset.parameters(), 'lr': joint_optimizer_lrs['conv_offset']},
  {'params': ppnet.last_layer.parameters(), 'lr': joint_optimizer_lrs['joint_last_layer_lr']}
@@ -199,7 +199,7 @@ log(str(joint_optimizer_lrs))
 
 from settings import warm_optimizer_lrs
 warm_optimizer_specs = \
-[{'params': ppnet.add_on_layers.parameters(), 'lr': warm_optimizer_lrs['add_on_layers'], 'weight_decay': 1e-3},
+[{'params': ppnet.add_on_layers.parameters(), 'lr': warm_optimizer_lrs['add_on_layers'], 'weight_decay': weight_decay},
  {'params': ppnet.prototype_vectors, 'lr': warm_optimizer_lrs['prototype_vectors']},
 ]
 warm_optimizer = torch.optim.Adam(warm_optimizer_specs)
@@ -210,9 +210,9 @@ from settings import warm_pre_offset_optimizer_lrs
 if 'resnet152' in base_architecture and 'stanford_dogs' in train_dir:
     warm_pre_offset_optimizer_lrs['features'] = 1e-5
 warm_pre_offset_optimizer_specs = \
-[{'params': ppnet.add_on_layers.parameters(), 'lr': warm_pre_offset_optimizer_lrs['add_on_layers'], 'weight_decay': 1e-3},
+[{'params': ppnet.add_on_layers.parameters(), 'lr': warm_pre_offset_optimizer_lrs['add_on_layers'], 'weight_decay': weight_decay},
  {'params': ppnet.prototype_vectors, 'lr': warm_pre_offset_optimizer_lrs['prototype_vectors']},
- {'params': ppnet.features.parameters(), 'lr': warm_pre_offset_optimizer_lrs['features'], 'weight_decay': 1e-3},
+ {'params': ppnet.features.parameters(), 'lr': warm_pre_offset_optimizer_lrs['features'], 'weight_decay': weight_decay},
 ]
 warm_pre_offset_optimizer = torch.optim.Adam(warm_pre_offset_optimizer_specs)
 

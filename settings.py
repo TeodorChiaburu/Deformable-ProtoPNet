@@ -2,7 +2,7 @@ base_architecture = 'resnet50' # will load inat weights if told so in resnet_fea
 img_size = 224
 num_classes = 22
 
-experiment_run = '013'
+experiment_run = '015'
 
 # Full set: './datasets/CUB_200_2011/'
 # Cropped set: './datasets/cub200_cropped/'
@@ -39,14 +39,16 @@ warm_pre_prototype_optimizer_lrs = {'add_on_layers': 3e-3,
 last_layer_optimizer_lr = 1e-4
 last_layer_fixed = True
 
+weight_decay = 1e-2
+
 coefs = {
     'crs_ent': 1,
-    'clst': -0.8,
-    'sep': 0.08,
+    'clst': -1.6, #-0.8,
+    'sep': 0.16, #0.08,
     'l1': 1e-2,
     'offset_bias_l2': 8e-1,
     'offset_weight_l2': 8e-1,
-    'orthogonality_loss': 0.1
+    'orthogonality_loss': 0.2 #0.1
 }
 
 subtractive_margin = True
@@ -54,6 +56,6 @@ subtractive_margin = True
 num_train_epochs = 7 #21
 num_warm_epochs = 1 #2
 num_secondary_warm_epochs = 1 #2
-push_start = 2 #4
+push_start = 3 #4
 
 push_epochs = [i for i in range(num_train_epochs) if i % 3 == 0]
